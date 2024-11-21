@@ -63,6 +63,7 @@ userSchema.virtual('bookCount').get(function () {
   return this.savedBooks.length;
 });
 
+// create model in db
 const User = model<UserDocument>('User', userSchema);
 
 export default User;
