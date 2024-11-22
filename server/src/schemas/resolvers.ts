@@ -9,10 +9,9 @@ import { signToken } from '../services/auth.js';
 // resolvers
 const resolvers = {
   Query: {
-    // find one user
-    user: async (_parent: any, { _id }: { _id: string }): Promise<UserDocument[] | null> => {
-      const params = _id ? { _id } : {};
-      return User.findOne(params);
+    // get single user
+    me: async (_parent: any, _args: any, context: any): Promise<UserDocument[] | null> => {
+      return context.user;
     },
   },
   Mutation: {
@@ -60,15 +59,43 @@ const resolvers = {
         console.error(err);
         throw new Error('Error creating user');
       }
-    }
-    // createVote: async (_parent: any, { _id, techNum }: { _id: string, techNum: number}): Promise<IMatchup | null> => {
-    //   const vote = await Matchup.findOneAndUpdate(
-    //     { _id },
-    //     { $inc: { [`tech${techNum}_votes`]: 1 } },
-    //     { new: true }
-    //   );
-    //   return vote;
-    // },
+    },
+
+    saveBook: async (_parent:any, args:any, context: any): Promise<{ user: any }
+    > => {
+      try {
+        const user = context.user; // get user from context
+
+        // Destructure the book data from the args (you should pass book data as arguments)
+        const { bookId, authors, description, title, image, link } = args;
+
+        // Create the new book object to save
+        const newBook = { bookId, authors, description, title, image, link };
+
+        // find user by id and update the book set
+        const updatedUser = await User.findOneAndUpdate(
+          {_id: user._id },
+          { $addToSet: { savedBooks: newBook } },
+          { new: true, runValidators: true }
+        );
+
+        // return the updated user
+        return { user: updatedUser};
+      } catch (err) {
+        console.error(err);
+        throw new Error('Error creating user');
+      }
+    },
+
+    // removeBook: async (_parent:any, args:any, context: any): Promise<{ user: any }
+    // > => {
+    //   try {
+        
+    //   } catch (err) {
+    //     console.error(err);
+    //     throw new Error('Error creating user');
+    //   }
+    // }
   },
 };
 
