@@ -87,15 +87,26 @@ const resolvers = {
       }
     },
 
-    // removeBook: async (_parent:any, args:any, context: any): Promise<{ user: any }
-    // > => {
-    //   try {
-        
-    //   } catch (err) {
-    //     console.error(err);
-    //     throw new Error('Error creating user');
-    //   }
-    // }
+    removeBook: async (_parent:any, args:any, context: any): Promise<{ user: any }
+    > => {
+      try {
+        const user = context.user; // get user from context
+
+        // find user by id and update the book set
+        const updatedUser = await User.findOneAndUpdate(
+          {_id: user._id },
+          // pull book off set by Id, pull bookId off of args
+          { $pull: { savedBooks: { bookId: args.bookId} } },
+          { new: true, runValidators: true }
+        );
+
+        // return the updated user
+        return { user: updatedUser};
+      } catch (err) {
+        console.error(err);
+        throw new Error('Error creating user');
+      }
+    }
   },
 };
 
