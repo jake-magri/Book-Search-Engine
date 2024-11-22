@@ -6,6 +6,7 @@ import routes from "./routes/index.js";
 import { ApolloServer } from "@apollo/server";
 import { expressMiddleware } from "@apollo/server/express4";
 import { typeDefs, resolvers } from "./schemas/index.js";
+import { authenticateToken } from './services/auth.js';
 
 // start express app and assigns it to a variable
 // set port to 3001 or use env variable
@@ -14,7 +15,7 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 const server = new ApolloServer({
   typeDefs,
-  resolvers,
+  resolvers
 });
 
 // declared asyncrounous arrow function that await's the start method ran on the server
@@ -27,7 +28,11 @@ const startApolloServer = async () => {
   // this one parses incoming requests with JSON payloads
   app.use(express.json());
 
-  app.use("/graphql", expressMiddleware(server));
+  app.use("/graphql", expressMiddleware(server as any,
+    {
+      context: authenticateToken as any
+    }
+  ));
 
   // if we're in production, serve client/dist as static assets
   if (process.env.NODE_ENV === "production") {

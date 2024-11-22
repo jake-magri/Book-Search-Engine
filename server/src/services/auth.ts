@@ -1,39 +1,45 @@
-//boilerplate code used from M18A28
-import type { Request, Response, NextFunction } from 'express';
+import type { Request } from 'express';
 import jwt from 'jsonwebtoken';
-
 import dotenv from 'dotenv';
+
 dotenv.config();
 
-interface JwtPayload {
+export interface JwtPayload {
   _id: unknown;
   username: string;
-  email: string,
+  email: string;
 }
 
-export const authenticateToken = (req: Request, _res: Response, _next: NextFunction) => {
-    // Allows token to be sent via req.body, req.query, or headers
-    let token = req.body.token || req.query.token || req.headers.authorization;
-    // If the token is sent in the authorization header, extract the token from the header
-    if (req.headers.authorization) {
-      token = token.split(' ').pop().trim();
-    }
-    // If no token is provided, return the request object as is
-    if (!token) {
-      return req;
-    }
-    // Try to verify the token
-    try {
-      const { data }: any = jwt.verify(token, process.env.JWT_SECRET_KEY || '', { maxAge: '2hr' });
-      // If the token is valid, attach the user data to the request object
-      req.user = data as JwtPayload;
-    } catch (err) {
-      // If the token is invalid, log an error message
-      console.log('Invalid token');
-    }
-    // Return the request object
-    return req;
-  
+export const authenticateToken = (context: { req: Request }) => {
+  const { req }:any = context;
+
+  // Extract the token from the Authorization header
+  let token = req.headers.authorization || '';
+
+  if (token) {
+    token = token.split(' ').pop()?.trim() || '';
+  }
+
+  // If no token is provided, return the context without modification
+  if (!token) {
+    return context;
+  }
+
+  // Try to verify the token
+  try {
+    const { data } = jwt.verify(
+      token,
+      process.env.JWT_SECRET_KEY || '',
+      { maxAge: '2h' }
+    ) as { data: JwtPayload };
+
+    // If the token is valid, attach the user data to the context
+    return { ...context, user: data };
+  } catch (err) {
+    // If the token is invalid, log an error message
+    console.error('Invalid token:', err);
+    return context;
+  }
 };
 
 export const signToken = (username: string, email: string, _id: unknown) => {
