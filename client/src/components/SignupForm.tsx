@@ -1,15 +1,16 @@
 import { useState } from 'react';
 import type { ChangeEvent, FormEvent } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
-
-import { createUser } from '../utils/API';
+import { useMutation } from '@apollo/client';
 import Auth from '../utils/auth';
 import type { User } from '../models/User';
+import { LOGIN_USER, ADD_USER } from '../utils/mutations';
 
 // biome-ignore lint/correctness/noEmptyPattern: <explanation>
 const SignupForm = ({}: { handleModalClose: () => void }) => {
   // set initial form state
   const [userFormData, setUserFormData] = useState<User>({ username: '', email: '', password: '', savedBooks: [] });
+  const [addUser] = useMutation(ADD_USER);
   // set state for form validation
   const [validated] = useState(false);
   // set state for alert
@@ -31,13 +32,16 @@ const SignupForm = ({}: { handleModalClose: () => void }) => {
     }
 
     try {
-      const response = await createUser(userFormData);
+      // data response from GraphQL
+      const { data } = await addUser({
+        variables: { ...userFormData},
+      });
 
-      if (!response.ok) {
+      if (!data) {
         throw new Error('something went wrong!');
       }
-
-      const { token } = await response.json();
+      // pull token off of server response
+      const { token } = data.addUser;
       Auth.login(token);
     } catch (err) {
       console.error(err);

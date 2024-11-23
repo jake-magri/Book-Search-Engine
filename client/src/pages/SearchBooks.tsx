@@ -13,7 +13,7 @@ import Auth from '../utils/auth';
 import { saveBook, searchGoogleBooks } from '../utils/API';
 import { saveBookIds, getSavedBookIds } from '../utils/localStorage';
 import type { Book } from '../models/Book';
-import type { GoogleAPIBook } from '../models/GoogleAPIBook';
+import type { GoogleAPIBook } from '../models/GoogleAPIBook'; 
 
 const SearchBooks = () => {
   // create state for holding returned google api data
