@@ -2,10 +2,6 @@
 import User, { UserDocument } from '../models/User.js';
 import { signToken } from '../services/auth.js';
 
-// interface Context {
-//   user?: User; // Optional user profile in context
-// }
-
 // resolvers
 const resolvers = {
   Query: {
@@ -36,24 +32,23 @@ const resolvers = {
     login: async (_parent: any, args: any): Promise<{ token: string; user: UserDocument }
     > => {
       try {
-        // Find the user by email
+        // Finds the user by email
         const email = args.email;
         const user = await User.findOne({ email });
 
         if (!user) {
           throw new Error('Invalid email or password');
         }
-        // Compare the provided password with the stored hash
-        const validPassword = await user.isCorrectPassword(args.password); // Assuming you have a method like this in your User model
+        // Compares the provided password with the stored hash
+        const validPassword = await user.isCorrectPassword(args.password);
 
         if (!validPassword) {
           throw new Error('Invalid email or password');
         }
 
-        // create token after successful authentication
+        // Creates token after successful authentication
         const token = signToken(user.username, user.email, user._id);
 
-        // returns the user and the token
         return { token, user };
       } catch (err) {
         console.error(err);
@@ -65,21 +60,17 @@ const resolvers = {
     > => {
       try {
         const user = context.user; // get user from context
-
-        // Destructure the book data from the args (you should pass book data as arguments)
+        // book data passed as args
         const { bookId, authors, description, title, image, link } = args;
-
-        // Create the new book object to save
         const newBook = { bookId, authors, description, title, image, link };
 
-        // find user by id and update the book set
+        // finds user by id and update the book set
         const updatedUser = await User.findOneAndUpdate(
           {_id: user._id },
           { $addToSet: { savedBooks: newBook } },
           { new: true, runValidators: true }
         );
 
-        // return the updated user
         return { user: updatedUser};
       } catch (err) {
         console.error(err);
@@ -90,7 +81,7 @@ const resolvers = {
     removeBook: async (_parent:any, args:any, context: any): Promise<{ user: any }
     > => {
       try {
-        const user = context.user; // get user from context
+        const user = context.user;
 
         // find user by id and update the book set
         const updatedUser = await User.findOneAndUpdate(
@@ -100,7 +91,6 @@ const resolvers = {
           { new: true, runValidators: true }
         );
 
-        // return the updated user
         return { user: updatedUser};
       } catch (err) {
         console.error(err);

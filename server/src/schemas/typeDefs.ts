@@ -13,7 +13,7 @@ const typeDefs = `
     description: String!
     title: String!
     image: String!
-    link: String!
+    link: String
   }
 
   type Auth {
@@ -33,7 +33,7 @@ const typeDefs = `
     addUser(username: String!, email: String!, password: String!): Auth
 
   # Save a book to the user's list of saved books
-    saveBook(bookId: ID!, authors: [String]!, description: String!, title: String!, image: String!, link: String!): User
+    saveBook(bookId: ID!, authors: [String]!, description: String!, title: String!, image: String!, link: String): User
 
   # Remove a book from the user's saved books
     removeBook(bookId: ID!): User
@@ -47,7 +47,7 @@ const typeDefs = `
     description: String!
     title: String!
     image: String!
-    link: String!
+    link: String
 }
 `;
 

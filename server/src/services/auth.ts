@@ -24,15 +24,15 @@ export const authenticateToken = (context: { req: Request }) => {
   if (!token) {
     return context;
   }
-
+  console.log('token exists', token);
   // Try to verify the token
   try {
-    const { data } = jwt.verify(
+    const data = jwt.verify(
       token,
       process.env.JWT_SECRET_KEY || '',
       { maxAge: '2h' }
     ) as { data: JwtPayload };
-
+    console.log('data',data);
     // If the token is valid, attach the user data to the context
     return { ...context, user: data };
   } catch (err) {

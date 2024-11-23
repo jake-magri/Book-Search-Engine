@@ -4,12 +4,13 @@ import { Form, Button, Alert } from 'react-bootstrap';
 import { useMutation } from '@apollo/client';
 import Auth from '../utils/auth';
 import type { User } from '../models/User';
-import { LOGIN_USER, ADD_USER } from '../utils/mutations';
+import { ADD_USER } from '../utils/mutations';
 
 // biome-ignore lint/correctness/noEmptyPattern: <explanation>
 const SignupForm = ({}: { handleModalClose: () => void }) => {
   // set initial form state
   const [userFormData, setUserFormData] = useState<User>({ username: '', email: '', password: '', savedBooks: [] });
+  // set addUser from useMutation
   const [addUser] = useMutation(ADD_USER);
   // set state for form validation
   const [validated] = useState(false);

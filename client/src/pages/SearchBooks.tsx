@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import type { FormEvent } from 'react';
+import { useMutation } from '@apollo/client';
 import {
   Container,
   Col,
@@ -14,6 +15,7 @@ import { saveBook, searchGoogleBooks } from '../utils/API';
 import { saveBookIds, getSavedBookIds } from '../utils/localStorage';
 import type { Book } from '../models/Book';
 import type { GoogleAPIBook } from '../models/GoogleAPIBook'; 
+import { SAVE_BOOK } from '../utils/mutations';
 
 const SearchBooks = () => {
   // create state for holding returned google api data
@@ -29,6 +31,9 @@ const SearchBooks = () => {
   useEffect(() => {
     return () => saveBookIds(savedBookIds);
   });
+
+  // set up useMutation to execute SAVE_BOOK
+  const [saveBook] = useMutation(SAVE_BOOK);
 
   // create method to search for books and set state on form submit
   const handleFormSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -75,9 +80,12 @@ const SearchBooks = () => {
     }
 
     try {
-      const response = await saveBook(bookToSave, token);
+      // saveBook mutation takes in mutiple variables directly
+      // this means that to pass the variables, must use the below syntax
+      console.log(JSON.stringify(bookToSave));
+      const response = await saveBook({variables: {...bookToSave}});
 
-      if (!response.ok) {
+      if (!response) {
         throw new Error('something went wrong!');
       }
 
