@@ -48,11 +48,11 @@ const startApolloServer = async () => {
   }
   // once the database connection is open, log to the console
   db.once("open", () => {
-    app.listen(PORT, () =>
+    app.listen(PORT, () => {
       console.log(`🌍 Now listening on localhost:${PORT}`);
       console.log(`API server running on port ${PORT}!`);
       console.log(`Use GraphQL at http://localhost:${PORT}/graphql`);
-    );
+    });
   });
   // on database error throw anh error in the console
   db.on("error", console.error.bind(console, "MongoDB connection error:"));
