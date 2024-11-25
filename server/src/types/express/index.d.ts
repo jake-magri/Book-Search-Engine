@@ -1,3 +1,6 @@
+declare module 'bcrypt';
+declare module 'jsonwebtoken';
+
 declare namespace Express {
   interface Request {
     user: {
@@ -6,3 +9,4 @@ declare namespace Express {
     };
   }
 }
+
