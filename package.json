@@ -19,7 +19,11 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/dotenv": "^8.2.3",
     "concurrently": "^8.2.0",
     "wait-on": "^8.0.1"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5"
   }
 }
