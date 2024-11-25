@@ -40,10 +40,13 @@ const startApolloServer = async () => {
 
   // if we're in production, serve client/dist as static assets
   if (process.env.NODE_ENV === "production") {
-    app.use(express.static(path.join(__dirname, "../client/dist")));
+    // Resolve the client/dist folder relative to the project root
+    const clientDistPath = path.resolve(__dirname, "../../client/dist");
+    // serve static files
+    app.use(express.static(clientDistPath));
     // always serve the index.html in every response
     app.get("*", (_req, res) => {
-      res.sendFile(path.join(__dirname, "../client/dist/index.html"));
+      res.sendFile(path.join(clientDistPath, "index.html"));
     });
   }
   // once the database connection is open, log to the console
