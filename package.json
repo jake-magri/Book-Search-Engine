@@ -4,7 +4,7 @@
   "description": "",
   "main": "server/dist/server.js",
   "scripts": {
-    "start": "node server/dist/server.js",
+    "start": "npm run client:build && npm run server",
     "start:dev": "concurrently \"cd server && npm run watch\" \"wait-on tcp:3001 && cd client && npm run dev\"",
     "server": "cd server && npm start",
     "server:dev": "cd server && npm run dev",
@@ -12,7 +12,7 @@
     "client:build": "cd client && npm run build",
     "client:dev": "cd client && npm run dev",
     "seed": "cd server && npm run seed",
-    "build": "concurrently \"cd server && npm run build\" \"cd client && npm run build\"",
+    "build": "cd server && npm run build",
     "render-build": "npm install && npm run build"
   },
   "keywords": [],
