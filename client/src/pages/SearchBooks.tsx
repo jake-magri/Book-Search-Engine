@@ -40,7 +40,7 @@ const SearchBooks = () => {
     event.preventDefault();
 
     if (!searchInput) {
-      return false;
+      throw new Error('Missing search input!');
     }
 
     try {
@@ -62,6 +62,7 @@ const SearchBooks = () => {
 
       setSearchedBooks(bookData);
       setSearchInput('');
+      return;
     } catch (err) {
       console.error(err);
     }
@@ -76,7 +77,7 @@ const SearchBooks = () => {
     const token = Auth.loggedIn() ? Auth.getToken() : null;
 
     if (!token) {
-      return false;
+      throw new Error('Token missing!');
     }
 
     try {
@@ -91,6 +92,7 @@ const SearchBooks = () => {
 
       // if book successfully saves to user's account, save book id to state
       setSavedBookIds([...savedBookIds, bookToSave.bookId]);
+      return;
     } catch (err) {
       console.error(err);
     }

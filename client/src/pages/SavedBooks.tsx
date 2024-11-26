@@ -42,7 +42,7 @@ const SavedBooks = () => {
 
 
       if (!token) {
-        return false;
+        throw new Error('Token missing!');
       }
 
       // Execute the removeBook mutation
@@ -52,6 +52,7 @@ const SavedBooks = () => {
 
       // Remove the book ID from localStorage
       removeBookId(bookId);
+      return;
     } catch (err) {
       console.error(err);
     }
