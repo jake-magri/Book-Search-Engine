@@ -16,12 +16,13 @@ A fully functioning Google Books API search engine built with a RESTful API, and
 
 ## Installation
 
-This application has been deployed using Render and can be accessed by navigating to the following link. https://book-search-engine-ydkm.onrender.com
+This application has been deployed using Render and can be accessed by navigating to the following link.  
+https://book-search-engine-ydkm.onrender.com
 
 ## Usage
 
 ### Screenshot
-
+![Application Screenshot](https://github.com/user-attachments/assets/a103b8ef-6daf-4828-8434-1e0f118fb5d4)
 
 ### Usage Information
 Users can search for books using the search bar, sign up, and login. If users are logged in they are able to add and remove books from their saved books list.
