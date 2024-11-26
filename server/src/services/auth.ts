@@ -11,6 +11,7 @@ export interface JwtPayload {
 }
 
 export const authenticateToken = (context: { req: Request }) => {
+  console.log('attempting to grab context', context);
   const { req }:any = context;
 
   // Extract the token from the Authorization header
