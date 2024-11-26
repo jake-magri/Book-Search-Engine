@@ -40,7 +40,7 @@ const SearchBooks = () => {
     event.preventDefault();
 
     if (!searchInput) {
-      return false;
+      throw new Error('Search input missing!');
     }
 
     try {
@@ -62,6 +62,7 @@ const SearchBooks = () => {
 
       setSearchedBooks(bookData);
       setSearchInput('');
+      return;
     } catch (err) {
       console.error(err);
     }
@@ -76,7 +77,7 @@ const SearchBooks = () => {
     const token = Auth.loggedIn() ? Auth.getToken() : null;
 
     if (!token) {
-      return false;
+      throw new Error('token is missing!');
     }
 
     try {

@@ -2,13 +2,15 @@
   "compilerOptions": {
     /* Language and Environment */
     "target": "ES2020", /* Set the JavaScript language version for emitted JavaScript */
-    "lib": ["ES2020"],
-
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "jsx": "react-jsx",
     /* Modules */
     "module": "ESNext", /* Specify what module code is generated */
     "moduleResolution": "bundler", /* Specify how TypeScript looks up a file from a given module specifier */
     "skipLibCheck": true,
 
+    /* Emit */
+    "outDir": "./dist",
     /* JavaScript Support */
     "allowJs": true, /* Allow JavaScript files to be a part of your program */
     "checkJs": true, /* Enable error reporting in type-checked JavaScript files */
@@ -28,6 +30,6 @@
     "noImplicitOverride": true, /* Ensure overriding members in derived classes are marked with an override modifier */
     "useUnknownInCatchVariables": true /* Ensure 'unknown' is used for catch clause*/
   },
-"include": ["src"],
+"include": ["client/src/**/*", "server/src/**/*"],
   "exclude": ["node_modules", "dist"]
 }

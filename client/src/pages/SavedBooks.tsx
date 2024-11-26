@@ -42,7 +42,7 @@ const SavedBooks = () => {
 
 
       if (!token) {
-        return false;
+        throw new Error('token is missing!');
       }
 
       // Execute the removeBook mutation
