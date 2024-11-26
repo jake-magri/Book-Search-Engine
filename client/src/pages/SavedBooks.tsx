@@ -12,8 +12,6 @@ const SavedBooks = () => {
   const { loading, data, error } = useQuery<{ me: User }>(GET_ME);
   const userData: User = data?.me || { username: '', email: '', password: '', savedBooks: [] };
 
-  console.log('userData', userData)
-
   // Mutation to remove book
   const [removeBook] = useMutation(REMOVE_BOOK, {
     update(cache, { data: { removeBook } }) {

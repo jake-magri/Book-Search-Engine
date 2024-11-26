@@ -7,6 +7,7 @@ const resolvers = {
   Query: {
     // get single user
     me: async (_parent: any, _args: any, context: any): Promise<UserDocument[] | null> => {
+      console.log(context.user);
       return context.user;
     },
   },
