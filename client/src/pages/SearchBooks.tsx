@@ -63,6 +63,7 @@ const SearchBooks = () => {
       setSearchedBooks(bookData);
       setSearchInput('');
       return;
+      return;
     } catch (err) {
       console.error(err);
     }
@@ -92,6 +93,7 @@ const SearchBooks = () => {
 
       // if book successfully saves to user's account, save book id to state
       setSavedBookIds([...savedBookIds, bookToSave.bookId]);
+      return;
     } catch (err) {
       console.error(err);
     }
