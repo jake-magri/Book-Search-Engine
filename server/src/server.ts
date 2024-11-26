@@ -1,6 +1,6 @@
 import express from "express";
 import path from "node:path";
-// import db from "./config/connection.js";
+import db from "./config/connection.js";
 import routes from "./routes/index.js";
 // boilerplate code used from M18A28
 import { ApolloServer } from "@apollo/server";
@@ -58,19 +58,19 @@ const startApolloServer = async () => {
       res.sendFile(path.join(clientDistPath, "index.html"));
     });
   }
-  // console.log('Attempting to connect to the db');
-  // // once the database connection is open, log to the console
-  // db.once("open", () => {
-  //   console.log(`🌍 db connection made`);
-    app.listen(PORT, () => {
-      
-      console.log(`API server running on port ${PORT}!`);
-      console.log(`Use GraphQL at http://localhost:${PORT}/graphql`);
-    });
-  // });
-  // // on database error throw anh error in the console
-  // db.on("error", console.error.bind(console, "MongoDB connection error:"));
+  console.log('Attempting to connect to the db');
+  // once the database connection is open, log to the console
+  db.once("open", () => {
+    console.log(`🌍 db connection made`);
+  });
+  // on database error throw anh error in the console
+  db.on("error", console.error.bind(console, "MongoDB connection error:"));
   // start the express server on the specified port
+  app.listen(PORT, () => {
+      
+    console.log(`API server running on port ${PORT}!`);
+    console.log(`Use GraphQL at http://localhost:${PORT}/graphql`);
+  });
   app.use(routes);
 };
 

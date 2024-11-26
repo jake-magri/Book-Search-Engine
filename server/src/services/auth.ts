@@ -11,18 +11,19 @@ export interface JwtPayload {
 }
 
 export const authenticateToken = (context: { req: Request }) => {
-  console.log('attempting to grab context', context);
+  // console.log('attempting to grab context', context);
   const { req }:any = context;
 
   // Extract the token from the Authorization header
   let token = req.headers.authorization || '';
-
+  console.log('token from context:', token);
   if (token) {
     token = token.split(' ').pop()?.trim() || '';
   }
 
   // If no token is provided, return the context without modification
   if (!token) {
+    console.log('No token found during auth')
     return context;
   }
   console.log('token exists', token);

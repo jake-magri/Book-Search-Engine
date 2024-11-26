@@ -15,11 +15,23 @@ const resolvers = {
     // add a user
     addUser: async (_parent: any, args: any): Promise<{ token: string; user: UserDocument }> => {
       try {
-        // create user with args
-        const user = await User.create(args);
-        if (!user) {
-          throw new Error('Error creating user');
+        if (!args.username || !args.email || !args.password) {
+          throw new Error('All fields are required');
         }
+        const existingUser = await User.findOne({ email: args.email });
+        if (existingUser) {
+          throw new Error('User already exists');
+        }
+        const submission = {
+          username: args.username,
+          email: args.email,
+          password: args.password
+        }
+        // create user with args
+        const user = await User.create(submission);
+        // if (!user) {
+        //   throw new Error('Error creating user');
+        // }
         // create token
         const token = signToken(user.username, user.email, user._id);
         // returns the user and the token
