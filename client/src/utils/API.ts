@@ -1,3 +1,5 @@
+// *** OLD RESTful API BELOW *** -- PARTIALLY IN USE TO ACCESS googlebooksapi --
+
 // import type { User } from '../models/User.js';
 // import type { Book } from '../models/Book.js';
 

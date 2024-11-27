@@ -8,6 +8,7 @@ const resolvers = {
     // get single user
     me: async (_parent: any, _args: any, context: any) => {
       console.log('context.user', context.user);
+      // Use context of current user from client to find user by id in db
       const user = await User.findById(context.user._id)
         .populate('savedBooks'); // Populate savedBookss
 
@@ -35,39 +36,35 @@ const resolvers = {
           email: args.email,
           password: args.password
         }
-        // create user with args
+        // create user with submission args
         const user = await User.create(submission);
-        // if (!user) {
-        //   throw new Error('Error creating user');
-        // }
         // create token
         const token = signToken(user.username, user.email, user._id);
-        // returns the user and the token
         return { token, user };
       } catch (err) {
         console.error(err);
         throw new Error('Error creating user');
       }
     },
-
+    // login a user
     login: async (_parent: any, args: any): Promise<{ token: string; user: UserDocument }
     > => {
       try {
-        // Finds the user by email
+        // find the user by email
         const email = args.email;
         const user = await User.findOne({ email });
 
         if (!user) {
           throw new Error('Invalid email or password');
         }
-        // Compares the provided password with the stored hash
+        // compare the provided password with the stored hash
         const validPassword = await user.isCorrectPassword(args.password);
 
         if (!validPassword) {
           throw new Error('Invalid email or password');
         }
 
-        // Creates token after successful authentication
+        // create the token after successful authentication
         const token = signToken(user.username, user.email, user._id);
 
         return { token, user };
@@ -76,7 +73,7 @@ const resolvers = {
         throw new Error('Error creating user');
       }
     },
-
+    // save a book
     saveBook: async (_parent:any, args:any, context: any): Promise<{ user: any }
     > => {
       try {
@@ -98,9 +95,8 @@ const resolvers = {
         throw new Error('Error creating user');
       }
     },
-
-    removeBook: async (_parent:any, args:any, context: any): Promise<{ user: any }
-    > => {
+    // remove a book
+    removeBook: async (_parent:any, args:any, context: any) => {
       try {
         const user = context.user;
 
@@ -112,7 +108,7 @@ const resolvers = {
           { new: true, runValidators: true }
         );
 
-        return { user: updatedUser};
+        return updatedUser;
       } catch (err) {
         console.error(err);
         throw new Error('Error creating user');

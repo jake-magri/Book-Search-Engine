@@ -1,3 +1,4 @@
+// Declared modules so typescript plays nice
 declare module 'bcrypt';
 declare module 'jsonwebtoken';
 

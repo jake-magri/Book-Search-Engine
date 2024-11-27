@@ -30,7 +30,7 @@ const server = new ApolloServer<MyContext>({
   resolvers
 });
 
-// declared asyncrounous arrow function that await's the start method ran on the server
+// declared asyncrounous arrow function that awaits the start method ran on the server
 const startApolloServer = async () => {
   console.log("Starting Apollo Server...");
   await server.start();
