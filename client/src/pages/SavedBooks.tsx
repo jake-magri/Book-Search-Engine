@@ -9,7 +9,7 @@ import type { Book } from '../models/Book';
 
 const SavedBooks = () => {
   // Query user data
-  const { loading, data, error } = useQuery<{ me: User }>(GET_ME);
+  const { loading, data, error, refetch } = useQuery<{ me: User }>(GET_ME);
   const userData = data?.me || { username: '', email: '', password: '', savedBooks: [] };
   console.log('Response from Apollo GET_ME query:', { loading, data, error });
   console.log('userData from GET_ME',userData);
@@ -33,6 +33,10 @@ const SavedBooks = () => {
         });
       }
     },
+    onCompleted: () => {
+      // Refetch user data after mutation complete
+      refetch();
+    }
   });
 
   // Handle book deletion
