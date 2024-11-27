@@ -21,7 +21,7 @@ This application has been deployed using Render and can be accessed by navigatin
 ## Usage
 
 ### Screenshot
-
+![Application Screenshot](https://github.com/user-attachments/assets/e9e3df01-70db-42ab-b69d-b80238287aae)
 
 ### Usage Information
 Users can search for books using the search bar, sign up, and login. If users are logged in they are able to add and remove books from their saved books list.
