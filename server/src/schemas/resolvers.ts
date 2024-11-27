@@ -6,9 +6,17 @@ import { signToken } from '../services/auth.js';
 const resolvers = {
   Query: {
     // get single user
-    me: async (_parent: any, _args: any, context: any): Promise<UserDocument[] | null> => {
-      console.log(context.user);
-      return context.user;
+    me: async (_parent: any, _args: any, context: any) => {
+      console.log('context.user', context.user);
+      const user = await User.findById(context.user._id)
+        .populate('savedBooks'); // Populate savedBookss
+
+      if (!user) {
+        console.log('No user found with the provided ID');
+        return context;
+      }
+      console.log('user from get me resolver before send to client', user);
+      return user;
     },
   },
   Mutation: {

@@ -34,7 +34,7 @@ export const authenticateToken = (context: { req: Request }) => {
       process.env.JWT_SECRET_KEY || '',
       { maxAge: '2h' }
     ) as { data: JwtPayload };
-    console.log('data',data);
+    console.log('Verified token data: ',data);
     // If the token is valid, attach the user data to the context
     return { ...context, user: data };
   } catch (err) {

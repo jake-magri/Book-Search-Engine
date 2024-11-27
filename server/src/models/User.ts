@@ -3,14 +3,14 @@ import bcrypt from 'bcrypt';
 
 // import schema from Book.js
 import bookSchema from './Book.js';
-import type { BookDocument } from './Book.js';
+// import type { BookDocument } from './Book.js';
 
 export interface UserDocument extends Document {
   id: string;
   username: string;
   email: string;
   password: string;
-  savedBooks: BookDocument[];
+  savedBooks: Array<typeof bookSchema>;
   isCorrectPassword(password: string): Promise<boolean>;
   bookCount: number;
 }
@@ -33,7 +33,11 @@ const userSchema = new Schema<UserDocument>(
       required: true,
     },
     // set savedBooks to be an array of data that adheres to the bookSchema
-    savedBooks: [bookSchema],
+    savedBooks: [
+      {
+        type: bookSchema
+      },
+    ],
   },
   // set this to use virtual below
   {

@@ -10,14 +10,14 @@ import type { Book } from '../models/Book';
 const SavedBooks = () => {
   // Query user data
   const { loading, data, error } = useQuery<{ me: User }>(GET_ME);
-  const userData: User = data?.me || { username: '', email: '', password: '', savedBooks: [] };
-
+  const userData = data?.me || { username: '', email: '', password: '', savedBooks: [] };
+  console.log('Response from Apollo GET_ME query:', { loading, data, error });
+  console.log('userData from GET_ME',userData);
   // Mutation to remove book
   const [removeBook] = useMutation(REMOVE_BOOK, {
     update(cache, { data: { removeBook } }) {
       // Read the current GET_ME query from the cache
       const cachedData = cache.readQuery<{ me: User }>({ query: GET_ME }) || { me: { savedBooks: [] } };
-
       if (cachedData.me && cachedData.me.savedBooks) {
         // Write the updated data back to the cache
         cache.writeQuery({
@@ -94,7 +94,7 @@ const SavedBooks = () => {
                   ) : null}
                   <Card.Body>
                     <Card.Title>{book.title}</Card.Title>
-                    <p className='small'>Authors: {book.authors}</p>
+                    <p className='small'>Authors: {book.authors?.join(', ')}</p>
                     <Card.Text>{book.description}</Card.Text>
                     <Button
                       className='btn-block btn-danger'
